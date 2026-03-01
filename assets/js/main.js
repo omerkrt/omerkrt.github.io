@@ -231,6 +231,7 @@ const projectData = {
   ijat: {
     name: 'i-JAT: IFEM Joint Analysis Tool',
     version: 'v2.1 | Multi-Process Architecture',
+    screenshot: 'assets/images/screenshots/ijat.png',
     description: 'A sophisticated automation tool that orchestrates the full bolted joint analysis workflow for aircraft structures. i-JAT coordinates HyperMesh (FEA preprocessing) with Excel-based joint sizing tools, processing both composite and metallic joints through a multi-level parallel architecture with real-time progress monitoring.',
     features: [
       'End-to-end automation: HyperMesh load extraction, Excel-based joint sizing, and result compilation',
