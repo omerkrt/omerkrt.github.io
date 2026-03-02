@@ -3,11 +3,62 @@
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
   initNav();
   initScrollReveal();
   initProjectFilters();
   initProjectModals();
 });
+
+/* --- Theme Toggle --- */
+function initThemeToggle() {
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const meta = document.querySelector('meta[name="theme-color"]');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+    if (meta) {
+      meta.content = theme === 'dark' ? '#121118' : '#faf9f6';
+    }
+    if (toggle) {
+      toggle.setAttribute('aria-label',
+        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+      );
+    }
+  }
+
+  // Determine initial theme: saved > system preference > light default
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    applyTheme(saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    applyTheme('dark');
+  }
+
+  // Toggle on click
+  toggle.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+
+    html.classList.add('theme-transitioning');
+    applyTheme(next);
+    localStorage.setItem('theme', next);
+
+    setTimeout(() => html.classList.remove('theme-transitioning'), 450);
+  });
+
+  // Respond to OS theme change (only if user hasn't explicitly chosen)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+}
 
 /* --- Navigation --- */
 function initNav() {
